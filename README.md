@@ -29,7 +29,7 @@ Python, Postgres, FastAPI (planned), Docker, pytest, GitHub Actions CI (planned)
 
 - [x] Repo scaffolding, environment setup
 - [x] Price ingestion (SMARD): fetch + parse
-- [ ] Weather ingestion (DWD DUETT): fetch + parse
+- [x] Weather ingestion (DWD DUETT): fetch + parse
 - [ ] Postgres schema + docker-compose setup
 - [ ] Persist ingested data to Postgres
 - [ ] Synthetic household load + PV profile generator
@@ -42,6 +42,10 @@ Python, Postgres, FastAPI (planned), Docker, pytest, GitHub Actions CI (planned)
 
 Instructions coming as ingestion and the API are completed.
 
-### Caveats
+## Caveats
 - DUETT radiation values are "pseudo-station" — interpolated from a 5km satellite+ground blended grid, not raw sensor readings everywhere.
 - Prices are fixed, published day-ahead values, not forecasts.
+
+## Future improvements
+
+- [ ] Scrape DWD's Stationen.txt to resolve station names to IDs automatically
