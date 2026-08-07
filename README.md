@@ -2,7 +2,7 @@
 
 A backend system that ingests real German electricity price and weather data to 
 decide the cheapest, most solar-friendly hours to run a home heat pump or charge 
-a battery — built as a portfolio project for Data Engineer / Python Backend roles.
+a battery.
 
 **Status: work in progress.** See roadmap below for what's done vs. planned.
 
