@@ -6,12 +6,7 @@ from dataclasses import dataclass
 import csv
 
 # This script ingests weather from the Deutsche Wetter Dienst (DWD).
-
-# Both id's refernce to Berlin-Brandneburg
-RADIATION_STATIONS_ID = '18044'
-TEMPERATURE_STATIONS_ID = '00427'
 MISSING_VALUE = -999
-
 
 @dataclass
 class WeatherReading:
@@ -89,7 +84,4 @@ def merge_weather_readings(radiation: dict, temperature: dict) -> list[WeatherRe
     return weather_data
 
 
-if __name__ == "__main__":
-    r_data = get_global_radiation(RADIATION_STATIONS_ID, 12)
-    temp_data = get_air_temperature(TEMPERATURE_STATIONS_ID, 12)
-    data = merge_weather_readings(r_data, temp_data)
+

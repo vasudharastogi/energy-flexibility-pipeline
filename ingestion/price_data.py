@@ -4,12 +4,6 @@ from dataclasses import dataclass
 
 # This script deals with the price ingestion.
 
-
-FILTER_ID = 4169
-REGION = 'DE'
-RESOLUTION = 'hour'
-
-
 @dataclass
 class PriceReading:
     timestamp_utc: datetime.datetime
@@ -17,7 +11,8 @@ class PriceReading:
 
 
 def convert_ms_to_date(ms):
-    dt = datetime.datetime.fromtimestamp(ms / 1000.0, tz=datetime.timezone.utc)
+    dt = datetime.datetime.fromtimestamp(
+        ms / 1000.0, tz=datetime.timezone.utc).replace(minute=0, second=0, microsecond=0)
     return dt
 
 
@@ -49,6 +44,7 @@ def fetch_week_prices(filter_id, region, resolution, week_timestamp_ms) -> list[
         res = requests.get(
             f'https://www.smard.de/app/chart_data/{filter_id}/{region}/{filter_id}_{region}_{resolution}_{week_timestamp_ms}.json',
             timeout=10)
+        res.raise_for_status()
         latest_prices = []
         for value in res.json()['series']:
             if value[1] is not None:
@@ -86,5 +82,4 @@ def ingest_latest(filter_id, region, resolution) -> list[PriceReading]:
     return fetch_week_prices(filter_id, region, resolution, latest_week_ts)
 
 
-if __name__ == "__main__":
-    print(ingest_latest(FILTER_ID, REGION, RESOLUTION))
+
