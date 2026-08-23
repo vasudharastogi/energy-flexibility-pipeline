@@ -31,7 +31,7 @@ Python, Postgres, FastAPI (planned), Docker, pytest, GitHub Actions CI (planned)
 - [x] Price ingestion (SMARD): fetch + parse
 - [x] Weather ingestion (DWD DUETT): fetch + parse
 - [x] Postgres schema + docker-compose setup
-- [ ] Persist ingested data to Postgres
+- [x] Persist ingested data to Postgres
 - [ ] Synthetic household load + PV profile generator
 - [ ] Rule-based optimizer
 - [ ] FastAPI backend + tests
