@@ -219,3 +219,9 @@ __marimo__/
 
 # Local project notes (not for the repo)
 CLAUDE.md
+
+# macOS
+.DS_Store
+
+# Microsoft Office lock files
+~$*
