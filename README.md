@@ -1,8 +1,7 @@
 # Energy Flexibility Pipeline
 
 A backend system that ingests real German electricity price and weather data to 
-decide the cheapest, most solar-friendly hours to run a home heat pump or charge 
-a battery.
+decide the cheapest, most solar-friendly hours to charge home a battery.
 
 **Status: work in progress.** See roadmap below for what's done vs. planned.
 
@@ -11,13 +10,13 @@ a battery.
 - Ingests real day-ahead electricity prices for Germany (SMARD.de)
 - Ingests real hourly solar radiation data (DWD's DUETT dataset)
 - (Planned) Runs a rule-based, explainable optimizer that schedules a synthetic 
-  household's heat pump/battery usage to minimize cost and maximize solar self-use
+  household's battery usage to minimize cost and maximize solar self-use
 - (Planned) Serves everything via a FastAPI backend, backed by Postgres
 
 ## Data sources & decisions
 
 - **Prices:** SMARD.de day-ahead auction prices, chosen over ENTSO-E for no-auth simplicity. 
-- **Weather:** DWD's DUETT dataset (hourly global solar radiation, combined satellite + ground-station product). Only the `FG_DUETT` radiation value is used. The quality-level flag (`QN_952`) and uncertainty column (`FG_UN_DUETT`) are intentionally not used — this project scopes to point-in-time radiation values, not formal quality filtering. 
+- **Weather:** DWD's DUETT dataset (hourly global solar radiation, combined satellite + ground-station product). Only the `FG_DUETT` radiation value is used. The quality-level flag (`QN_952`) and uncertainty column (`FG_UN_DUETT`) are intentionally not used.
 - **Historical backfill:** ~2-4 weeks of both prices and weather, ingested to support backtesting (not needed for the optimizer's day-to-day logic, which only ever looks at one day at a time).
 
 
@@ -43,7 +42,7 @@ Python, Postgres, FastAPI (planned), Docker, pytest, GitHub Actions CI (planned)
 Instructions coming as ingestion and the API are completed.
 
 ## Caveats
-- DUETT radiation values are "pseudo-station" — interpolated from a 5km satellite+ground blended grid, not raw sensor readings everywhere.
+- DUETT radiation values are "pseudo-station", interpolated from a 5km satellite+ground blended grid, not raw sensor readings everywhere.
 - Prices are fixed, published day-ahead values, not forecasts.
 
 ## Future improvements
