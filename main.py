@@ -21,7 +21,7 @@ prices = backfill(FILTER_ID, REGION, RESOLUTION, WEEKS)
 radiation = get_global_radiation(RADIATION_STATIONS_ID, WEEKS)
 temperature = get_air_temperature(TEMPERATURE_STATIONS_ID, WEEKS)
 
-# persit
+# persist
 conn = get_connection()
 
 try: 
@@ -30,5 +30,7 @@ try:
                 RADIATION_STATIONS_ID, temperature, radiation)
     conn.commit()
 
-except: conn.rollback()
+except Exception: 
+    conn.rollback()
+    raise
 finally: conn.close()
