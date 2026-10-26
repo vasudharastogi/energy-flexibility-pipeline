@@ -2,6 +2,7 @@ from ingestion.price_data import backfill
 from ingestion.weather_data import get_air_temperature, get_global_radiation
 from persistence import save_prices, save_weather
 from db import get_connection
+from simulation.household_load import get_price_timestamps
 
 # Prices
 FILTER_ID = 4169
@@ -29,6 +30,16 @@ try:
     save_weather(conn, TEMPERATURE_STATIONS_ID,
                 RADIATION_STATIONS_ID, temperature, radiation)
     conn.commit()
+
+    # load the H25 profile 
+
+    # get the price timestamps
+    get_price_timestamps(conn)
+
+    # compute the household load
+
+    # save the household load
+
 
 except Exception: 
     conn.rollback()

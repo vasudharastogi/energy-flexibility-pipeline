@@ -18,7 +18,7 @@ class HouseholdLoadReading:
     timestamp_utc: datetime.datetime
     load_kwh: float
 
-
+# reads and modifies the household load profile header 
 def load_H25_profile(filepath: str) -> pd.DataFrame:
     raw_data = pd.read_excel(filepath, sheet_name='H25', header=None)
 
@@ -31,8 +31,6 @@ def load_H25_profile(filepath: str) -> pd.DataFrame:
     profile = raw_data.loc[4:, 2:]
     profile.columns = midx
     profile = profile.reset_index(drop=True).astype(float)
-
-    print(profile.shape)
     return profile
 
 
@@ -41,7 +39,18 @@ def get_day_type(date: datetime.datetime) -> str:
 
 
 def get_price_timestamps(conn) -> list[datetime.datetime]:
-    pass
+    # query only for timestamp_utc which have weather and price data
+
+    with conn.cursor() as cur:
+        cur.execute('SELECT e.timestamp_utc FROM energy_prices AS e' 
+        ' INNER JOIN raw_radiation AS r ON r.timestamp_utc = e.timestamp_utc' 
+        ' ORDER BY e.timestamp_utc')
+        data = cur.fetchall()
+
+    timestamps = [item[0] for item in data]
+
+    return timestamps
+
 
 
 def apply_dynamization(x0: float, t: int):
