@@ -6,11 +6,13 @@
 
 import pandas as pd
 import datetime
+import holidays
 from datetime import date
 from dataclasses import dataclass
 
 H25_FILEPATH = "../include/Kopie_von_Repräsentative_Profile_BDEW_H25_G25_L25_P25_S25_Veröffentlichung.xlsx"
 ANNUAL_CONSUMPTION_KWH = 3500
+BERLIN_HOLIDAYS = holidays.country_holidays("DE", subdiv="BE")
 
 
 @dataclass
@@ -33,9 +35,16 @@ def load_H25_profile(filepath: str) -> pd.DataFrame:
     profile = profile.reset_index(drop=True).astype(float)
     return profile
 
-
-def get_day_type(date: datetime.datetime) -> str:
-    pass
+# Returns the BDEW day type (WT/SA/FT) for a Berlin local time. Sundays and public holidays count as FT.
+def get_day_type(local_time: datetime.datetime) -> str:
+    
+    weekday = local_time.weekday()
+    if local_time in BERLIN_HOLIDAYS or weekday == 6:
+        return 'FT'
+    if weekday == 5:
+        return 'SA'
+    return 'WT'
+    
 
 
 def get_price_timestamps(conn) -> list[datetime.datetime]:
@@ -48,9 +57,7 @@ def get_price_timestamps(conn) -> list[datetime.datetime]:
         data = cur.fetchall()
 
     timestamps = [item[0] for item in data]
-
     return timestamps
-
 
 
 def apply_dynamization(x0: float, t: int):
@@ -58,9 +65,14 @@ def apply_dynamization(x0: float, t: int):
 
 
 def get_household_load(timestamp: list[datetime.datetime], profile: pd.DataFrame, annual_consumption_kwh: float) -> list[HouseholdLoadReading]:
+
+    # take timestamps, get which day is weekday, weekend and holdiday
+    # do i need to convert timezones?
+    # lookup the right value for timestamp from profile dataframe and call the apply_dynamization function using that
     pass
 
 
 if __name__ == "__main__":
     load_H25_profile(H25_FILEPATH)
+    print(get_day_type(datetime.datetime(2026, 5, 25, 16, 0, tzinfo=datetime.timezone.utc)))
 
